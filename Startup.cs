@@ -15,10 +15,18 @@ namespace WebNetCore
 {
     public class Startup
     {
+
+        public IConfigurationRoot configRoot { get; set; }
+        public static string ConnectionString { get; set; }
         public IConfiguration Configuration { get; private set; }
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            configRoot = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
         }
 
        // This method gets called by the runtime. Use this method to add services to the container.
@@ -59,6 +67,8 @@ namespace WebNetCore
             app.UseRouting();
 
             app.UseAuthorization();
+
+            ConnectionString = configRoot.GetConnectionString("Conn");
 
             app.UseEndpoints(endpoints =>
             {

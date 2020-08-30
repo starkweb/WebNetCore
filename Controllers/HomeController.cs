@@ -20,6 +20,10 @@ namespace WebNetCore.Controllers
 
         public IActionResult Index()
         {
+            string conName = Startup.ConnectionString;
+            ViewBag.coname = conName;
+            TempData["con"] = conName;
+            ViewData["con1"] = conName;
             return View();
         }
 
